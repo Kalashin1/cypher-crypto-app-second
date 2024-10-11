@@ -143,8 +143,54 @@
       <!-- banner section end -->
    </div>
    <!-- header section end -->
+
+   <div class="modal" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Important Notice!!!</h5>
+        <button type="button" class="close" id="close-button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>ATTENTION!!! NO PAYMENT SHOULD BE MADE TO ANY ACCOUNT MANAGER AS THOSE PAYMENTS WOULD BE VOID! ONLY MAKE PAYMENTS AND DEPOSITS VIA THE WEBSITE THROUGH THIS WALLET ADDRESS</p>
+        <p class="my-2">bc1qu3qr355k8thmym0xcnywnzypfzs3ep9cstk2cm</p>
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+   <div class="layout_padding p-4" style="padding: 6rem 0;">
+      <div class="container">
+         <div class="row">
+            <div class="col-md-12">
+               <h1 class="lead m-4">Daily Stats</h1>
+               <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Coin</th>
+      <th scope="col">Price</th>
+      <th scope="col">Change</th>
+      <th scope="col">High</th>
+      <th scope="col">Low</th>
+      <th scope="col">Total Volume</th>
+      <th scope="col">Total Supply</th>
+    </tr>
+  </thead>
+  <tbody id="crypto-tracker">
+  </tbody>
+</table>
+            </div>
+         </div>
+      </div>
+   </div>
+
+  
    <!-- services section start -->
-   <div class="services_section layout_padding" id="services">
+   <div class="services_section layout_padding" id="services" style="margin-bottom: 8rem;">
       <div class="container">
          <div class="row">
             <div class="col-md-12">
@@ -181,8 +227,10 @@
       </div>
    </div>
    <!-- services section end -->
+
+  
    <!-- work section start -->
-   <div class="work_section layout_padding" id="about">
+   <div class="work_section " id="about">
       <div class="container">
          <div class="row">
             <div class="col-md-12">
@@ -239,6 +287,70 @@
       </div>
    </div>
    <!-- work section end -->
+     <div class="layout_padding" style="padding: 2rem;">
+      
+      <div class="container">
+        <div class="row">
+           <div class="col-md-12">
+              <div class="services_main">
+                 <hr class="border">
+                 <h1 class="services_taital">Pricing</h1>
+                 <hr class="border">
+              </div>
+           </div>
+        </div>
+        <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+      <p class="lead">Quickly build an effective pricing table for your potential customers with this Bootstrap example. It's built with default Bootstrap components and utilities with little customization.</p>
+      </div>
+      <div class="card-deck mb-3 text-center">
+        <div class="card mb-4 box-shadow">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Economy</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$300 <small class="text-muted">/5days</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+               <li>$3,000 Profit</li>
+               <li>24/hr Live Chat</li>
+              <li>Email support</li>
+              <li>Help center access</li>
+            </ul>
+            <a href="https://admin.finaxistrading.pro" class="btn btn-lg btn-block btn-outline-primary">Sign up for free</a>
+          </div>
+        </div>
+        <div class="card mb-4 box-shadow">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Business</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$1,000 <small class="text-muted">/ 14days</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>$10,000 Profit</li>
+              <li>Dedicated Trader</li>
+              <li>Priority email support</li>
+              <li>Help center access</li>
+            </ul>
+            <a href="https://admin.finaxistrading.pro" class="btn btn-lg btn-block btn-primary">Get started</a>
+          </div>
+        </div>
+        <div class="card mb-4 box-shadow">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Executive</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$10,000 <small class="text-muted">/ 1mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>$76,000 Profit</li>
+              <li>Personal Account Manager</li>
+              <li>Phone and email support</li>
+              <li>Help center access</li>
+            </ul>
+            <a href="https://admin.finaxistrading.pro" class="btn btn-lg btn-block btn-primary">Contact us</a>
+          </div>
+        </div>
+      </div>
+   </div>
+   </div>
    <!-- features section start -->
    <div class="features_section layout_padding" id="features">
       <div class="container">
@@ -504,6 +616,54 @@
    <!-- sidebar -->
    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
    <script src="js/custom.js"></script>
+   <script>
+      $(document).ready(function() {
+         $.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=20&page=1`)
+
+      .then(datas => {
+         let rows = ""
+         console.log(datas)
+         for (const data of datas) {
+            rows +=`<tr>
+               <td>${data.name}</td>   
+               <td>${data.symbol}</td>
+               <td>${new Intl.NumberFormat('en-us',{
+                  currency: 'USD',
+                  style: 'currency',
+                  maximumFractionDigits: 2
+               }).format(data.current_price)}</td>
+               <td style="color: ${data.price_change_24h > 0 ? 'green': 'red'}">${Number(data.price_change_24h).toFixed(4)}</td>
+               <td>${new Intl.NumberFormat('en-us',{
+                  currency: 'USD',
+                  style: 'currency',
+                  maximumFractionDigits: 2
+               }).format(data.high_24h)}</td>
+               <td>${new Intl.NumberFormat('en-us',{
+                  currency: 'USD',
+                  style: 'currency',
+                  maximumFractionDigits: 2
+               }).format(data.low_24h)}</td>
+               <td>${new Intl.NumberFormat('en-us',{
+                  currency: 'USD',
+                  style: 'currency',
+                  maximumFractionDigits: 2
+               }).format(data.total_volume)}</td>
+               <td>${new Intl.NumberFormat('en-us',{
+                  currency: 'USD',
+                  style: 'currency',
+                  maximumFractionDigits: 2
+               }).format(data.total_supply)}</td>
+            </tr>`
+         }
+      
+         $('#crypto-tracker').append(rows)
+         $("#modal").css({display: "block", "backgroundColor": "rgba(0, 0, 0, .5)"})
+         $("#close-button").on("click", () => {
+            $("#modal").css("display", "none");
+         })
+      })
+      })
+   </script>
 </body>
 
 </html>
